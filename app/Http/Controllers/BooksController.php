@@ -4,23 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 
-class BookController extends Controller
+class BooksController extends Controller
 {
+
+    public function index()
+    {
+
+    }
+
+
+    public function show(Book $book)
+    {
+
+    }
+
     /**
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store()
     {
-        Book::create($this->validateRequest());
+        $book = Book::create($this->validateRequest());
+        return redirect()->route('books.show', ['book' => $book->id]);
     }
 
     /**
      * @param Book $book
-     * @return void
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Book $book)
     {
         $book->update($this->validateRequest());
+        return redirect()->route('books.show', ['book' => $book->id]);
     }
 
     /**
@@ -38,5 +52,6 @@ class BookController extends Controller
     public function destroy(Book $book)
     {
         $book->delete();
+        return redirect()->route('books.index');
     }
 }

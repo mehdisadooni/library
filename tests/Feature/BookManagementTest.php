@@ -6,7 +6,7 @@ use App\Models\Book;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class BookReservationTest extends TestCase
+class BookManagementTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -17,13 +17,13 @@ class BookReservationTest extends TestCase
      */
     public function a_book_can_be_added_to_the_library()
     {
-        $this->withoutExceptionHandling();
         $response = $this->post(route('books.store'), [
             'title' => 'cool book title',
             'author' => 'victor'
         ]);
-        $response->assertOk();
+        $book = Book::first();
         $this->assertCount(1, Book::all());
+        $response->assertRedirect(route('books.show', ['book' => $book->id]));
     }
 
     /**
@@ -68,11 +68,9 @@ class BookReservationTest extends TestCase
             'title' => 'new Title',
             'author' => 'new Title'
         ]);
-        $book = Book::first();
-        $this->assertEquals('new Title', $book->title);
-        $this->assertEquals('new Title', $book->author);
-        $response->assertOk();
-        $this->assertCount(1, Book::all());
+        $this->assertEquals('new Title', $book->fresh()->title);
+        $this->assertEquals('new Title', $book->fresh()->author);
+        $response->assertRedirect(route('books.show', ['book' => $book->id]));
     }
 
     /**
@@ -86,6 +84,10 @@ class BookReservationTest extends TestCase
             'title' => 'cool book title',
             'author' => 'victor'
         ]);
+        $this->assertCount(1, Book::all());
         $book = Book::first();
+        $response = $this->delete(route('books.destroy', ['book' => $book->id]));
+        $this->assertCount(0, Book::all());
+        $response->assertRedirect(route('books.index'));
     }
 }
