@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BookController;
+use App\Http\Controllers\BooksController;
+use App\Http\Controllers\AuthorsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +15,13 @@ use App\Http\Controllers\BookController;
 |
 */
 
-Route::prefix('books')->name('books.')->group(function () {
-    Route::post('/', [BookController::class, 'store'])->name('store');
-    Route::patch('/{book}', [BookController::class, 'update'])->name('update');
-    Route::delete('/{book}', [BookController::class, 'update'])->name('update');
-});
+Route::resource('books', BooksController::class);
+Route::resource('authors', AuthorsController::class);
+//Route::prefix('books')->name('books.')->group(function () {
+//    Route::get('/', [BookController::class, 'index'])->name('index');
+//    Route::get('/{book}', [BookController::class, 'show'])->name('show');
+//    Route::post('/', [BookController::class, 'store'])->name('store');
+//    Route::patch('/{book}', [BookController::class, 'update'])->name('update');
+//    Route::delete('/{book}', [BookController::class, 'destroy'])->name('destroy');
+//});
+
