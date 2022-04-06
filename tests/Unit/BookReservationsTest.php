@@ -76,5 +76,4 @@ class BookReservationsTest extends TestCase
         $this->assertNotNull(Reservation::find(2)->checked_in_at);
         $this->assertEquals(now(), Reservation::find(2)->checked_in_at);
     }
-    // a user can check out a book twice
 }
